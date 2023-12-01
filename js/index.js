@@ -30,6 +30,7 @@ async function fetchPaginateBlogs(pageNumber) {
 		createPaginationButton(response.headers.get('x-total-count'), pageNumber);
 	} catch (error) {
 		console.log(error.message);
+		toggleNotification(true, error.message);
 	}
 }
 
@@ -49,6 +50,7 @@ async function fetchFiliteredBlogs(searchInput, pageNumber) {
 		createPaginationButton(response.headers.get('x-total-count'), pageNumber);
 	} catch (error) {
 		console.log(error.message);
+		toggleNotification(true, error.message);
 	}
 }
 
@@ -110,7 +112,7 @@ function displayBlogs(blogs) {
 		 *
 		 */
 
-		card.addEventListener('click', (e) => {
+		card.addEventListener('click', () => {
 			window.location.href = `details.html?id=${blog.id}`;
 		});
 	});
@@ -181,3 +183,20 @@ searchBar.addEventListener('input', () => {
 		fetchFiliteredBlogs(searchInput);
 	}
 });
+
+/**
+ * Part 5
+ * API calls may cause errors. To let the user know what is going on, the app should display proper error message on the page. In all of the html files, there is a div with class 'notification'. Whenever there is an API error, place the error message as text content of 'notification' and make the 'notification-container' element appear on the page. Further, when users click the 'close' button, remove the 'notification-container' element from the page.
+ *
+ */
+
+function toggleNotification(show, message = '') {
+	const notificationContainer = document.querySelector('.notification-container');
+
+	if (show) {
+		notificationMessage.textContent = message;
+		notificationContainer.classList.remove('hidden');
+	} else {
+		notificationContainer.classList.add('hidden');
+	}
+}
